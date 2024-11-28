@@ -77,7 +77,7 @@ const login=async(req,res)=>{
     try {
         const {username,password}=req.body;
         const user=await User.findOne({username})
-        const isPasswordCorrect= bcrypt.compare(password,user?.password || "")
+        const isPasswordCorrect= await bcrypt.compare(password,user?.password || "")
         if(!user || !isPasswordCorrect)
         {
             return res.status(400).json(
@@ -85,7 +85,7 @@ const login=async(req,res)=>{
                     error:"Invalid username or invalid password"
         })
         }
-        generateToken(user._id ,res);
+        await generateToken(user._id ,res);
         res.status(200).json(
             {
                 message: "successfully login",
@@ -135,11 +135,8 @@ const logout=async(req,res)=>{
 const getMe=async(req,res)=>{
     try {
         const user= await User.findOne({_id:req.user._id}).select("-password")
-        res.status(200).json(
-            {
-                user
-            }
-        )
+        res.status(200).json(user)
+           
         
     } catch (error) {
         console.error(error);

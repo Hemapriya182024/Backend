@@ -6,7 +6,8 @@ import postRoutes from './routes/postRoutes.js'
 import notificationRoute from './routes/notificationRoute.js'
 import { connectDB } from './config/db.js';
 import cookieParser from 'cookie-parser'
-import cloundinary from 'cloudinary'
+import cloundinary from 'cloudinary';
+import cors from 'cors'
 
 
 
@@ -19,7 +20,10 @@ cloundinary.config({
 const app=express();
 const PORT=process.env.PORT
 
-
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true
+}));
 connectDB()
 
 app.get('/',(req,res)=>{
@@ -30,7 +34,12 @@ app.get('/',(req,res)=>{
     })
 })
 
-app.use(express.json())
+app.use(express.json(
+    {
+
+        limit:"5mb"
+    }
+))
 app.use(cookieParser());
 app.use('/api/auth',authRoutes)
 app.use('/api/users',userRoutes)

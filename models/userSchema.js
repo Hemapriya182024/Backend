@@ -56,11 +56,11 @@ const UserSchema=mongoose.Schema(
             default:''
 
         },
-        likedPosts:{
+        likedPosts:[{
             type:mongoose.Schema.Types.ObjectId,
             ref:"Post",
             default:[]
-        }
+        }]
     },{timestamps:true}
 )
 
