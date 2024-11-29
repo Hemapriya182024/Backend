@@ -103,14 +103,55 @@ const followUnfollowUser = async (req, res) => {
             error: "Internal server error",
         });
     }
-};
+ };
+// const getSuggestedUser = async (req, res) => {
+//     try {
+//         // 1. Get the logged-in user's ID from the request object
+//         const userId = req.user._id;
+
+//         // 2. Fetch the logged-in user's details (excluding password) from the database
+//         const userFollowedByMe = await User.findById({ _id: userId }).select('-password');
+
+//         // 3. Aggregate query to get a random list of users excluding the current user
+//         const users = await User.aggregate([
+//             {
+//                 $match: {
+//                     _id: { $ne: userId }, // Match users whose ID is not equal to the logged-in user's ID
+//                 }
+//             },
+//             {
+//                 $sample: { size: 10 } // Randomly select 10 users
+//             }
+//         ]);
+
+//         // 4. Filter out users who are already followed by the logged-in user
+//         const filteredUser = users.filter((user) =>
+//             !userFollowedByMe.following.include(user._id) // Exclude users already in the following list
+//         );
+
+//         // 5. Limit the suggested users list to a maximum of 4
+//         const suggestedUsers = filteredUser.slice(0, 4);
+
+//         // 6. Set the password field of each suggested user to null for security
+//         suggestedUsers.forEach((user) => (user.password = null));
+
+//         // 7. Send the suggested users as the response with a 200 status code
+//         res.status(200).json(suggestedUsers);
+//     } catch (error) {
+//         // 8. If any error occurs, return a 500 Internal Server Error response
+//         res.status(500).json({
+//             error: "Internal server error", // General error message
+//         });
+//     }
+// };
+
 const getSuggestedUser = async (req, res) => {
     try {
         // 1. Get the logged-in user's ID from the request object
         const userId = req.user._id;
 
         // 2. Fetch the logged-in user's details (excluding password) from the database
-        const userFollowedByMe = await User.findById({ _id: userId }).select('-password');
+        const userFollowedByMe = await User.findById(userId).select('-password');
 
         // 3. Aggregate query to get a random list of users excluding the current user
         const users = await User.aggregate([
@@ -120,23 +161,32 @@ const getSuggestedUser = async (req, res) => {
                 }
             },
             {
+                $project: { password: 0 } // Exclude the password field
+            },
+            {
                 $sample: { size: 10 } // Randomly select 10 users
             }
         ]);
 
         // 4. Filter out users who are already followed by the logged-in user
-        const filteredUser = users.filter((user) =>
-            !userFollowedByMe.following.include(user._id) // Exclude users already in the following list
+        const filteredUsers = users.filter(
+            (user) =>
+                !userFollowedByMe.following
+                    .map((f) => f.toString())
+                    .includes(user._id.toString())
         );
 
         // 5. Limit the suggested users list to a maximum of 4
-        const suggestedUsers = filteredUser.slice(0, 4);
+        const suggestedUsers = filteredUsers.slice(0, 4);
 
         // 6. Set the password field of each suggested user to null for security
-        suggestedUsers.forEach((user) => (user.password = null));
+        const sanitizedUsers = suggestedUsers.map((user) => ({
+            ...user,
+            password: null,
+        }));
 
         // 7. Send the suggested users as the response with a 200 status code
-        res.status(200).json(suggestedUsers);
+        res.status(200).json(sanitizedUsers);
     } catch (error) {
         // 8. If any error occurs, return a 500 Internal Server Error response
         res.status(500).json({
@@ -144,6 +194,7 @@ const getSuggestedUser = async (req, res) => {
         });
     }
 };
+
 
 
 const updateUser = async (req, res) => {
