@@ -21,7 +21,7 @@ const app=express();
 const PORT=process.env.PORT
 
 app.use(cors({
-    origin: 'https://project-umber-delta.vercel.app/login',
+    origin: 'https://project-umber-delta.vercel.app',
     credentials: true
 }));
 connectDB()
