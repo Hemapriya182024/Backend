@@ -19,11 +19,11 @@ cloundinary.config({
 })
 const app=express();
 const PORT=process.env.PORT
-
 app.use(cors({
-    origin: 'https://project-umber-delta.vercel.app',
+    origin: '*',  // For development
     credentials: true
-}));
+  }));
+  
 connectDB()
 
 app.get('/',(req,res)=>{
