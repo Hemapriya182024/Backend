@@ -280,9 +280,7 @@ const updateUser = async (req, res) => {
         user.password = null;
 
         // Send a success response with the updated user details
-        return res.status(200).json({
-            user
-        });
+        return res.status(200).json(user);
 
     } catch (error) {
         // Handle unexpected errors and send a generic error response
