@@ -20,7 +20,7 @@ cloundinary.config({
 const app=express();
 const PORT=process.env.PORT
 app.use(cors({
-    origin: ' http://localhost:5173',  
+    origin: 'https://project-umber-delta.vercel.app',  
     credentials: true
   }));
   
