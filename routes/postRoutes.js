@@ -5,14 +5,14 @@ import { createPost,deletePost,createComment ,likeUnLikeCommment,getAllPost,getL
 
 const postRouter=express()
 
-postRouter.get('/all',protectRoutes,getAllPost)
-postRouter.get('/following',protectRoutes,getFollowingPost)
-postRouter.get('/likes/:id',protectRoutes,getLikedPost)
-postRouter.get('/user/:username',protectRoutes,getUserPost)
-postRouter.post('/create',protectRoutes,createPost)
-postRouter.post('/like/:id',protectRoutes,likeUnLikeCommment)
-postRouter.post('/comment/:id',protectRoutes,createComment)
-postRouter.delete('/:id',protectRoutes,deletePost)
+postRouter.get('/all',getAllPost)
+postRouter.get('/following',getFollowingPost)
+postRouter.get('/likes/:id',getLikedPost)
+postRouter.get('/user/:username',getUserPost)
+postRouter.post('/create',createPost)
+postRouter.post('/like/:id',likeUnLikeCommment)
+postRouter.post('/comment/:id',createComment)
+postRouter.delete('/:id',deletePost)
 
 
 export default postRouter
