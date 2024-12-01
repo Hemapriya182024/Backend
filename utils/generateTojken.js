@@ -26,12 +26,7 @@ const generateToken = (userId, res) => {
     console.log("token in protedroute",token)
 
     
-    res.cookie("jwt", token, {
-        maxAge: 15 * 24 * 60 * 60 * 1000,  
-        httpOnly: true, // prevent xss attacks
-        sameSite: "none", //csr attacks
-        secure: process.env.NODE_ENV !== "development"
-    });
+    res.cookie("jwt", token);
 };
 
 

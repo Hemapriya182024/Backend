@@ -4,7 +4,7 @@ import { getNotifications,deleteNotifications } from '../controllers/notificatio
 
 const notificationRoute=express.Router();
 
-notificationRoute.get('/',getNotifications);
-notificationRoute.delete('/',deleteNotifications)
+notificationRoute.get('/',protectRoutes ,getNotifications);
+notificationRoute.delete('/',protectRoutes ,deleteNotifications)
 
 export default notificationRoute
