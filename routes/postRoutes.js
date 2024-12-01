@@ -12,7 +12,7 @@ postRouter.get('/user/:username',protectRoutes,getUserPost)
 postRouter.post('/create',protectRoutes,createPost)
 postRouter.post('/like/:id',protectRoutes,likeUnLikeCommment)
 postRouter.post('/comment/:id',protectRoutes,createComment)
-postRouter.delete('/:id',protectRoutesdeletePost)
+postRouter.delete('/:id',protectRoutes,deletePost)
 
 
 export default postRouter
