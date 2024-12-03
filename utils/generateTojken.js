@@ -21,14 +21,16 @@
 import jwt from "jsonwebtoken"
 
 
-const generateToken = (userId, res) => {
-    const token = jwt.sign({ userId }, process.env.SECRET_KEY, { expiresIn: "15d" });
-    console.log("token in protedroute",token)
-
+const generateToken = (userId) => {
+    return  jwt.sign({ userId }, process.env.SECRET_KEY, { expiresIn: "15d" });
+   
     
-    res.cookie("jwt", token);
 };
 
 
 
 export default generateToken 
+// console.log("token in protedroute",token)
+
+    
+    // res.cookie("jwt", token);

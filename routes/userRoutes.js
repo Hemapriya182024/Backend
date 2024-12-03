@@ -5,10 +5,10 @@ import { getProfile ,followUnfollowUser,getSuggestedUser,updateUser} from '../co
 
 const userRoute =express.Router()
 
-userRoute.get("/profile/:username",getProfile)
-userRoute.post("/follow/:id",followUnfollowUser)
-userRoute.get('/suggested',getSuggestedUser)
-userRoute.post('/update',updateUser)
+userRoute.get("/profile/:username", protectRoutes,getProfile)
+userRoute.post("/follow/:id", protectRoutes,followUnfollowUser)
+userRoute.get('/suggested', protectRoutes,getSuggestedUser)
+userRoute.post('/update', protectRoutes,updateUser)
 
 
 export default userRoute
